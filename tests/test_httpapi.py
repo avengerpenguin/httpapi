@@ -23,6 +23,7 @@ def mock_responses(request):
         return response["code"], headers, response["body"].encode("utf-8")
 
     httpretty.register_uri(httpretty.GET, re.compile(".*"), body=callback)
+    httpretty.enable()
 
     request.addfinalizer(httpretty.disable)
     request.addfinalizer(httpretty.reset)
