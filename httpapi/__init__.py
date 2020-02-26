@@ -1,8 +1,13 @@
 from functools import partial
+from requests import Session
+from urllib import parse as urlparse
+
+
+session = Session()
 
 
 class HttpApi(object):
-    def __init__(self, requests_client, base_url):
+    def __init__(self, base_url, requests_client=session):
         self.http = requests_client
         self.base_url = base_url
 
@@ -10,13 +15,17 @@ class HttpApi(object):
         if len(args) == 0:
             return self
         else:
-            new_url = self.base_url + "/" + "/".join(args)
-            return self.__class__(self.http, new_url)
+            new_url = urlparse.urljoin(
+                self.base_url, "/".join(str(arg) for arg in args)
+            )
+            # new_url = self.base_url + "/" + "/".join(args)
+            return self.__class__(new_url, self.http)
 
     def __getattr__(self, key):
         if key in ["put", "get", "post", "delete"]:
             requests_verb = getattr(self.http, key)
             return partial(requests_verb, self.base_url)
         else:
-            new_url = self.base_url + "/" + key
-            return self.__class__(self.http, new_url)
+            new_url = urlparse.urljoin(self.base_url, "/" + str(key))
+            # new_url = self.base_url + "/" + key
+            return self.__class__(new_url, self.http)
