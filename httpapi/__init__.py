@@ -18,7 +18,6 @@ class HttpApi(object):
             new_url = urlparse.urljoin(
                 self.base_url, "/".join(str(arg) for arg in args)
             )
-            # new_url = self.base_url + "/" + "/".join(args)
             return self.__class__(new_url, self.http)
 
     def __getattr__(self, key):
@@ -27,5 +26,4 @@ class HttpApi(object):
             return partial(requests_verb, self.base_url)
         else:
             new_url = urlparse.urljoin(self.base_url, "/" + str(key))
-            # new_url = self.base_url + "/" + key
             return self.__class__(new_url, self.http)
