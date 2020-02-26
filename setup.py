@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import io
-from os.path import dirname
-from os.path import join
+from os.path import dirname, join
 
-from setuptools import find_packages
-from setuptools import setup
+from setuptools import Command, find_packages, setup
 
 
 def read(*names, **kwargs):
@@ -19,6 +16,25 @@ def read(*names, **kwargs):
         return fh.read()
 
 
+class Upload(Command):
+    user_options = [("package=", "p", "File to upload to PyPI")]
+
+    def initialize_options(self):
+        self.package = None
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from twine import settings
+        from twine.commands import upload
+
+        upload_settings = settings.Settings()
+        upload.upload(
+            upload_settings, dists=[self.package],
+        )
+
+
 setup(
     name="httpapi",
     use_scm_version={
@@ -26,6 +42,7 @@ setup(
         "write_to": "httpapi/_version.py",
         "fallback_version": "0.0.0",
     },
+    cmdclass={"upload": Upload,},
     description="Pythonic helpers for HTTP APIs with long URLs.",
     author="Ross Fenning",
     author_email="github@rossfenning.co.uk",
@@ -55,5 +72,5 @@ setup(
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
     requires=["requests"],
-    setup_requires=["pytest-runner", "setuptools_scm>=3.3.1",],
+    setup_requires=["pytest-runner", "setuptools_scm>=3.3.1", "twine"],
 )
