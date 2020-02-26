@@ -1,9 +1,6 @@
 *.py[cod]
 __pycache__
 
-# C extensions
-*.so
-
 # Packages
 *.egg
 *.egg-info
@@ -23,9 +20,6 @@ lib64
 venv*/
 pyvenv*/
 pip-wheel-metadata/
-
-# Installer logs
-pip-log.txt
 
 # Unit test / coverage reports
 .coverage
