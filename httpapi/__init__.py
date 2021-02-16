@@ -1,7 +1,5 @@
 from functools import partial
-from typing import Callable
-from typing import Text
-from typing import Union
+from typing import Callable, Union
 from urllib import parse as urlparse
 
 from requests import Session
