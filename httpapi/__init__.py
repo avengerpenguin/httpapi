@@ -1,5 +1,7 @@
 from functools import partial
-from typing import Text, Union, Callable
+from typing import Callable
+from typing import Text
+from typing import Union
 from urllib import parse as urlparse
 
 from requests import Session
@@ -7,7 +9,7 @@ from requests import Session
 session = Session()
 
 
-class HttpApi(object):
+class HttpApi:
     """
     Stateful client intended to be instantiated around the base URL of a given
     HTTP API. Implemented as a class so the state can retain TCP connections
@@ -16,7 +18,7 @@ class HttpApi(object):
     retained) rather than mutate the class instance.
     """
 
-    def __init__(self, base_url: Text, requests_client: Session = session):
+    def __init__(self, base_url: str, requests_client: Session = session):
         """
         Create a new client pointing initially at a given base URL. The intent
         is that subsequent calls via client('foo') or client.foo will then
@@ -37,7 +39,7 @@ class HttpApi(object):
         self.http = requests_client
         self.base_url = base_url
 
-    def __call__(self, *args: [Text]) -> "HttpApi":
+    def __call__(self, *args: [str]) -> "HttpApi":
         """
         Allows for e.g. HttpApi('http://example.com/')('foo', 'bar') to fetch
         http://example.com/foo/bar
@@ -54,7 +56,7 @@ class HttpApi(object):
             print(new_url)
             return self.__class__(new_url, requests_client=self.http)
 
-    def __getattr__(self, key: Text) -> Union[Callable, "HttpApi"]:
+    def __getattr__(self, key: str) -> Union[Callable, "HttpApi"]:
         """
         Allows for e.g. HttpApi('http://example.com/').foo to then fetch
         http://example.com/foo

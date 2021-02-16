@@ -1,11 +1,14 @@
 import io
-from os.path import dirname, join
+from os.path import dirname
+from os.path import join
 
-from setuptools import Command, find_packages, setup
+from setuptools import Command
+from setuptools import find_packages
+from setuptools import setup
 
 
 def read(*names, **kwargs):
-    with io.open(
+    with open(
         join(dirname(__file__), *names),
         encoding=kwargs.get("encoding", "utf8"),
     ) as fh:
@@ -27,7 +30,8 @@ class Upload(Command):
 
         upload_settings = settings.Settings()
         upload.upload(
-            upload_settings, dists=[self.package],
+            upload_settings,
+            dists=[self.package],
         )
 
 
@@ -38,7 +42,9 @@ setup(
         "write_to": "httpapi/_version.py",
         "fallback_version": "0.0.0",
     },
-    cmdclass={"upload": Upload,},
+    cmdclass={
+        "upload": Upload,
+    },
     description="Pythonic helpers for HTTP APIs with long URLs.",
     author="Ross Fenning",
     author_email="github@rossfenning.co.uk",
