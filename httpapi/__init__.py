@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Callable, Union
+from typing import Callable, List, Union
 from urllib import parse as urlparse
 
 from requests import Session
@@ -37,7 +37,7 @@ class HttpApi:
         self.http = requests_client
         self.base_url = base_url
 
-    def __call__(self, *args: [str]) -> "HttpApi":
+    def __call__(self, *args: List[str]) -> "HttpApi":
         """
         Allows for e.g. HttpApi('http://example.com/')('foo', 'bar') to fetch
         http://example.com/foo/bar
