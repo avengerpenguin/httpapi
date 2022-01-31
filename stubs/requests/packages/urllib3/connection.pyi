@@ -13,6 +13,7 @@ if sys.version_info >= (3, 0):
 else:
     from httplib import HTTPConnection as _HTTPConnection
     from httplib import HTTPException as HTTPException
+
     class ConnectionError(Exception): ...
 
 class DummyConnection: ...
